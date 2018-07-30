@@ -1,28 +1,32 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="App">
+    <div class="container">
+      <h1>SuperHero Finder</h1>
+      <Search v-on:do-search="searchSuperHero($event)"/>
+      <ListResults v-bind:results="results"/>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    import * as serviceApi from './services/serviceAPIMarvel'
+    import {Search, ListResults} from './components'
+    export default {
+        data() {
+            const results = []
+            return {results}
+        },
+        components: {
+            Search,
+            ListResults
+        },
+        methods: {
+            searchSuperHero: function (query) {
+                serviceApi.searchSuperHero(query)
+                    .then(results => {
+                        this.results = results
+                    })
+            }
+        }
+    }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
